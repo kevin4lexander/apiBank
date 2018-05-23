@@ -23,8 +23,8 @@ app.use(bodyParser.json())
 
 
 // POST
-app.post("/api-bank/user", (req, res) => {
-    //console.log("POST /api-bank/user")
+app.post("/user", (req, res) => {
+    //console.log("POST /user")
     //console.log(req.body)
 
     let user = new User()
@@ -47,7 +47,7 @@ app.post("/api-bank/user", (req, res) => {
 // GET
 
 // all user
-app.get("/api-bank/user", (req, res) => {
+app.get("/user", (req, res) => {
     User.find({}, (err, users) => {
         if(err) return res.status(500).send({message: "Error with the request "+ err})
         if(!users || users.length==0) return res.status(404).send({message: "Empty"})
@@ -57,7 +57,7 @@ app.get("/api-bank/user", (req, res) => {
 })
 
 // accounts of only one user
-app.get("/api-bank/user/:idUser", (req, res) => {
+app.get("/user/:idUser", (req, res) => {
     let idUser = req.params.idUser
 
     User.find({id: idUser}, (err, accounts) => {
@@ -69,7 +69,7 @@ accounts
 })
 
 // cuentas de un banco, tipo y usuario especificos
-app.get("/api-bank/typeAcc/:bank/:typeAcc/:idUser", (req, res) => {
+app.get("/typeAcc/:bank/:typeAcc/:idUser", (req, res) => {
     let idUser = req.params.idUser
     let bank = req.params.bank
     let typeAcc = req.params.typeAcc
@@ -83,7 +83,7 @@ app.get("/api-bank/typeAcc/:bank/:typeAcc/:idUser", (req, res) => {
 })
 
 // cuentas de una banco y usuario especificos
-app.get("/api-bank/bankAcc/:bank/:idUser", (req, res) => {
+app.get("/bankAcc/:bank/:idUser", (req, res) => {
     let idUser = req.params.idUser
     let bank = req.params.bank
 
@@ -96,7 +96,7 @@ app.get("/api-bank/bankAcc/:bank/:idUser", (req, res) => {
 })
 
 // cuenta especifica de un usuario
-app.get("/api-bank/user/:idUser/:numberAcc", (req, res) => {
+app.get("/user/:idUser/:numberAcc", (req, res) => {
     let idUser = req.params.idUser
     let numberAcc = req.params.numberAcc
 
@@ -109,7 +109,7 @@ app.get("/api-bank/user/:idUser/:numberAcc", (req, res) => {
 })
 
 // verificar numero de cuenta y clave de una cuenta bancaria de usuario
-app.get("/api-bank/:idUser/:numberAcc/:key", (req, res) => {
+app.get("/:idUser/:numberAcc/:key", (req, res) => {
     let idUser = req.params.idUser
     let numberAcc = req.params.numberAcc
     let key = req.params.key
@@ -125,7 +125,7 @@ app.get("/api-bank/:idUser/:numberAcc/:key", (req, res) => {
 // PUT
 
 // update user data
-app.put("/api-bank/user/:idUser", (req, res) => {
+app.put("/user/:idUser", (req, res) => {
     let idUser = req.params.idUser
     let body = req.body
 
@@ -137,7 +137,7 @@ app.put("/api-bank/user/:idUser", (req, res) => {
 })
 
 //update balance of account
-app.put("/api-bank/user/:idUser/:numberAcc", (req, res) => {
+app.put("/user/:idUser/:numberAcc", (req, res) => {
     let idUser = req.params.idUser
     let numberAcc = req.params.numberAcc
     let balance = req.body.balanceAcc
@@ -154,7 +154,7 @@ app.put("/api-bank/user/:idUser/:numberAcc", (req, res) => {
 // DELETE
 
 //delete user
-app.delete("/api-bank/user/:idUser", (req, res) => {
+app.delete("/user/:idUser", (req, res) => {
     let idUser = req.params.idUser
 
     User.findOne({id: idUser}, (err, user) => {
