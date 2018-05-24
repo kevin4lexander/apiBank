@@ -123,7 +123,7 @@ app.get("/:idUser/:numberAcc/:key", (req, res) => {
 })
 
 // verificar clave de una cuenta bancaria de usuario
-app.get("account/:idUser/:bankAcc/:key", (req, res) => {
+app.get("/account/:idUser/:bankAcc/:key", (req, res) => {
     let idUser = req.params.idUser
     let bankAcc = req.params.bankAcc
     let key = req.params.key
