@@ -122,11 +122,12 @@ app.get("/:idUser/:numberAcc/:key", (req, res) => {
     })
 })
 
+// verificar clave de una cuenta bancaria de usuario
 app.get("/:idUser/:key", (req, res) => {
     let idUser = req.params.idUser
     let key = req.params.key
 
-    User.find({id: idUser, keyAcc: key}, {numberAcc}, (err, account) => {
+    User.find({id: idUser, keyAcc: key}, (err, account) => {
         if(err) return res.status(500).send({message: "Error with the request "+ err})
         if(!account || account.length==0) return res.status(404).send({message: "User not found"})
 
