@@ -108,6 +108,20 @@ app.get("/user/:idUser/:numberAcc", (req, res) => {
     })
 })
 
+// balance de una cuenta especifica de un usuario
+app.get("/balance/:idUser/:numberAcc", (req, res) => {
+    let idUser = req.params.idUser
+    let numberAcc = req.params.numberAcc
+
+    User.findOne({id: idUser, numberAcc: numberAcc}, (err, account) => {
+        if(err) return res.status(500).send({message: "Error with the request "+ err})
+        if(!account || account.length==0) return res.status(404).send({message: "Account not found"})
+
+        console.log(account.balanceAcc)
+        res.status(200).end(JSON.stringify(account.balanceAcc))
+    })
+})
+
 // verificar numero de cuenta y clave de una cuenta bancaria de usuario
 app.get("/:idUser/:numberAcc/:key", (req, res) => {
     let idUser = req.params.idUser
