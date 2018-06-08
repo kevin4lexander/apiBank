@@ -179,20 +179,36 @@ app.put("/user/:idUser", (req, res) => {
     })
 })
 
-//update balance of account
-app.put("/user/:idUser/:numberAcc", (req, res) => {
-    let idUser = req.params.idUser
+//update balance of account ---
+app.put("/updatebalance/:numberAcc/:balanceAcc", (req, res) => {
+    let balance = req.params.balanceAcc
     let numberAcc = req.params.numberAcc
-    let balance = req.body.balanceAcc
-    //let body = req.body
 
-    User.findOneAndUpdate({id: idUser, numberAcc: numberAcc}, {balanceAcc: balance}, (err, user) => {
+    User.findOneAndUpdate({numberAcc: numberAcc}, {balanceAcc: balance}, (err, user) => {
         if(err) res.status(500).send({message: "Error updating account balance "+ err})
         
         res.status(200).send({user})
     })
 })
 
+//update balance of account
+app.put("/updatebal/:numberAcc/:amountTrans", (req, res) => {
+    let numberAcc = req.params.numberAcc
+    let amountTrans = req.params.amountTrans
+    
+    User.findOne({numberAcc: numberAcc}, (err, account) => {
+        if(err) return res.status(500).send({message: "Error with the request "+ err})
+        if(!account || account.length==0) return res.status(404).send({message: "Account not found"})
+
+        var oldBalance = account.amountTrans;
+        var newBalance = oldBalance-amountTrans;
+        User.findOneAndUpdate({numberAcc: numberAcc}, {balanceAcc: newBalance}, (err, user) => {
+            if(err) res.status(500).send({message: "Error updating account balance "+ err})
+            
+            res.status(200).send({user})
+        })
+    })
+})
 
 // DELETE
 
