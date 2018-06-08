@@ -192,16 +192,36 @@ app.put("/updatebalance/:numberAcc/:balanceAcc", (req, res) => {
 })
 
 //update balance of account
-app.put("/updatebal/:numberAcc/:amountTrans", (req, res) => {
+app.put("/receivetransfer/:numberAcc/:amountTrans", (req, res) => {
     let numberAcc = req.params.numberAcc
-    let amountTrans = req.params.amountTrans
+    let amount = req.params.amountTrans
     
     User.findOne({numberAcc: numberAcc}, (err, account) => {
         if(err) return res.status(500).send({message: "Error with the request "+ err})
         if(!account || account.length==0) return res.status(404).send({message: "Account not found"})
 
-        var oldBalance = account.amountTrans;
-        var newBalance = oldBalance-amountTrans;
+        var oldBalance = account.balanceAcc;
+        //console.log(oldBalance);
+        var newBalance = parseFloat(oldBalance) + parseFloat(amount);
+        User.findOneAndUpdate({numberAcc: numberAcc}, {balanceAcc: newBalance}, (err, user) => {
+            if(err) res.status(500).send({message: "Error updating account balance "+ err})
+            
+            res.status(200).send({user})
+        })
+    })
+})
+
+app.put("/sendtransfer/:numberAcc/:amountTrans", (req, res) => {
+    let numberAcc = req.params.numberAcc
+    let amount = req.params.amountTrans
+    
+    User.findOne({numberAcc: numberAcc}, (err, account) => {
+        if(err) return res.status(500).send({message: "Error with the request "+ err})
+        if(!account || account.length==0) return res.status(404).send({message: "Account not found"})
+
+        var oldBalance = account.balanceAcc;
+        //console.log(oldBalance);
+        var newBalance = parseFloat(oldBalance) - parseFloat(amount);
         User.findOneAndUpdate({numberAcc: numberAcc}, {balanceAcc: newBalance}, (err, user) => {
             if(err) res.status(500).send({message: "Error updating account balance "+ err})
             
